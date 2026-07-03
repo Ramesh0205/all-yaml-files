@@ -1,0 +1,61 @@
+templates/deployment.yaml
+
+you should create template folder later inside create deployment.yaml and service yaml  in real time this is code 
+
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ .Release.Name }}
+
+spec:
+  replicas: {{ .Values.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: nginx
+
+  template:
+    metadata:
+      labels:
+        app: nginx
+
+    spec:
+      containers:
+      - name: nginx
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+
+        ports:
+        - containerPort: 80
+
+
+
+
+
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: {{ .Release.Name }}
+
+spec:
+  selector:
+    app: nginx
+
+  ports:
+  - port: {{ .Values.service.port }}
+    targetPort: 80
+
+  type: {{ .Values.service.type }}
+
+
+tree /F command to see structure folder
+
+
+manual-chart/
+│
+├── Chart.yaml
+├── values.yaml
+└── templates/
+      ├── deployment.yaml
+      └── service.yaml
